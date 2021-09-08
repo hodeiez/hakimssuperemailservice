@@ -18,13 +18,15 @@ import java.io.IOException;
 @AllArgsConstructor
 public class EmailResource {
 
+    @Autowired
     private final EmailService emailService;
+
     private WelcomeMailDto welcomeMailDto;
 
 
     @GetMapping("/customer/add")
     public String getRecipient(@RequestBody RecipientDto recipientDto) throws IOException {
-    return "redirect: /customer/mail/sendMail/" + recipientDto.getFirstName() + "/email/" + recipientDto.getEmail() ;
+    return "redirect:/customer/mail/sendMail/" + recipientDto.getFirstName() + "/email/" + recipientDto.getEmail() ;
     }
 
     @PostMapping("customer/mail/sendMail/{firstName}/email/{email}")

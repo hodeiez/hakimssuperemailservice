@@ -1,8 +1,10 @@
 package hakimemailsender.application;
 
 import hakimemailsender.domain.Emailer;
+import hakimemailsender.persistance.EmailSender;
 import hakimemailsender.presentation.WelcomeMailDto;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,9 +18,10 @@ import java.io.IOException;
 @Service
 public class EmailService {
 
-    private final Emailer emailer;
+    @Autowired
+    private final EmailSender emailSender;
 
     public String sendWelcomeEmail (WelcomeMailDto welcomeMailDto) throws IOException {
-        return emailer.sendWelcomeMail(welcomeMailDto);
+        return emailSender.sendWelcomeMail(welcomeMailDto);
     }
 }

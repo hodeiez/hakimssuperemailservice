@@ -16,10 +16,9 @@ import java.io.IOException;
 
 public class EmailSender implements Emailer {
 
-
     @Override
     public String sendWelcomeMail(WelcomeMailDto welcomeMailDto) throws IOException {
-        Email from = new Email("test@example.com");
+        Email from = new Email("testingprogramingthings@gmail.com");
         Email to = new Email(welcomeMailDto.getSendTo()); // hide
 
         String subject = welcomeMailDto.getSubject();
