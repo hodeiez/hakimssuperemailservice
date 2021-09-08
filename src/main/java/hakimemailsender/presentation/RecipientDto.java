@@ -5,12 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-/**
- * Created by Jacaranda Perez
- * Date: 2021-09-05
- * Project: HakimEmailSender
- */
-@Data
+
+/*
+@Data THIS CLASS IS NOT NEED (?)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecipientDto {
    private final String firstName;
@@ -22,3 +19,4 @@ public class RecipientDto {
       this.email = email;
    }
 }
+*/

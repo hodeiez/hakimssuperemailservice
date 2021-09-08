@@ -23,15 +23,18 @@ public class EmailResource {
 
     private WelcomeMailDto welcomeMailDto;
 
+/*
+    @GetMapping("/customer/add") We don't need this(?)
+    public ResponseEntity<?>  getRecipient(@RequestBody RecipientDto recipientDto) throws IOException {
+    return ResponseEntity.ok().body("mail" + recipientDto.getfirstName());
 
-    @GetMapping("/customer/add")
-    public String getRecipient(@RequestBody RecipientDto recipientDto) throws IOException {
-    return "redirect:/customer/mail/sendMail/" + recipientDto.getFirstName() + "/email/" + recipientDto.getEmail() ;
     }
+
+ */
 
     @PostMapping("customer/mail/sendMail/{firstName}/email/{email}")
     public ResponseEntity<?> sendMail(@PathVariable("email") String email, @PathVariable("firstName") String firstName) throws IOException {
-        welcomeMailDto = new WelcomeMailDto(email, "ss@ss", "hello" + firstName, "hello" );
+        welcomeMailDto = new WelcomeMailDto(email, "ss@ss", "hello " + firstName, "hello" );
         emailService.sendWelcomeEmail(welcomeMailDto);
         return ResponseEntity.ok().body("email sent");
     }
