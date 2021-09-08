@@ -5,9 +5,7 @@ import hakimemailsender.domain.Emailer;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -23,18 +21,17 @@ public class EmailResource {
     private final EmailService emailService;
     private WelcomeMailDto welcomeMailDto;
 
-/*
-    @PostMapping("/customer/add")
-    public ResponseEntity<?> sendEmail(@RequestBody RecipientDto recipientDto) throws IOException {
-        WelcomeMailDto welcomeMailDto = new WelcomeMailDto(recipientDto.getEmail(), //from, content, subject
 
-        //redirect to send email(takes WelcomeMailDto)
-        //send email
-
-
-
-
-
+    @GetMapping("/customer/add")
+    public String getRecipient(@RequestBody RecipientDto recipientDto) throws IOException {
+    return "redirect: /customer/mail/sendMail/" + recipientDto.getFirstName() + "/email/" + recipientDto.getEmail() ;
     }
-*/
+
+    @PostMapping("customer/mail/sendMail/{firstName}/email/{email}")
+    public ResponseEntity<?> sendMail(@PathVariable("email") String email, @PathVariable("firstName") String firstName) throws IOException {
+        welcomeMailDto = new WelcomeMailDto(email, "ss@ss", "hello" + firstName, "hello" );
+        emailService.sendWelcomeEmail(welcomeMailDto);
+        return ResponseEntity.ok().body("email sent");
+    }
+
 }

@@ -14,13 +14,11 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecipientDto {
    private final String firstName;
-   private final String lastName;
    private final String email;
 
    @JsonCreator
-   public RecipientDto(@JsonProperty("firstname")String firstName, @JsonProperty("lastname")String lastName, @JsonProperty("email") String email) {
+   public RecipientDto(@JsonProperty("firstname")String firstName, @JsonProperty("email") String email) {
       this.firstName = firstName;
-      this.lastName = lastName;
       this.email = email;
    }
 }
