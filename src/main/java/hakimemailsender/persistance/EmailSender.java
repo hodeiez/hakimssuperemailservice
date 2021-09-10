@@ -15,10 +15,18 @@ import java.io.IOException;
  */
 
 public class EmailSender implements Emailer {
+        private String apiKey;
+        private String mailFrom;
+
+    public EmailSender(String apiKey, String mailFrom) {
+        this.apiKey = apiKey;
+        this.mailFrom = mailFrom;
+
+    }
 
     @Override
     public String sendWelcomeMail(WelcomeMailDto welcomeMailDto) throws IOException {
-        Email from = new Email("testingprogramingthings@gmail.com");
+        Email from = new Email(mailFrom);
         Email to = new Email(welcomeMailDto.getSendTo()); // hide
 
         String subject = welcomeMailDto.getSubject();
@@ -26,7 +34,7 @@ public class EmailSender implements Emailer {
 
         Mail mail = new Mail(from, subject, to, content);
 
-        SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+        SendGrid sg = new SendGrid(apiKey);
         Request request = new Request();
 
         request.setMethod(Method.POST);

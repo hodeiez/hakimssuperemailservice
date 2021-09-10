@@ -19,7 +19,6 @@ import java.io.IOException;
 @AllArgsConstructor
 public class EmailResource {
 
-    @Autowired
     private final EmailService emailService;
 
     private WelcomeMailDto welcomeMailDto;

@@ -18,7 +18,6 @@ import java.io.IOException;
 @Service
 public class EmailService {
 
-    @Autowired
     private final EmailSender emailSender;
 
     public String sendWelcomeEmail (WelcomeMailDto welcomeMailDto) throws IOException {

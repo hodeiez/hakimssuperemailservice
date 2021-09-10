@@ -1,0 +1,2 @@
+twilio.api.key: ${TWILIO_API_KEY}
+twilio.email.from: ${TWILIO_EMAIL_FROM}
