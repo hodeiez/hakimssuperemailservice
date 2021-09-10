@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.io.IOException;
 
 /**
@@ -37,6 +38,21 @@ public class EmailResource {
         welcomeMailDto = new WelcomeMailDto(email, "ss@ss", "hello " + firstName, "hello" );
         emailService.sendWelcomeEmail(welcomeMailDto);
         return ResponseEntity.ok().body("email sent");
+    }
+
+    @PostMapping("/welcome")
+    public ResponseEntity<?> sendWellcome(@RequestBody WelcomeMailDto mail) {
+
+        mail.setSubject("hakims livs");
+        System.out.println(mail.getContent());
+        try {
+            emailService.sendWelcomeEmail(mail);
+            return ResponseEntity.ok().body(mail);
+        }
+        catch(IOException e){
+            return ResponseEntity.badRequest().body(mail);
+        }
+
     }
 
 }
