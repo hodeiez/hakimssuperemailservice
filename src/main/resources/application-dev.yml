@@ -1,2 +1,2 @@
-twilio.api.key: ${TWILIO_API_KEY}
-twilio.email.from: ${TWILIO_EMAIL_FROM}
+twilio.api.key=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
+twilio.email.from=testingprogramingthings@gmail.com
