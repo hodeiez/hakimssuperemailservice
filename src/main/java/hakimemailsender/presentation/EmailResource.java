@@ -32,13 +32,14 @@ public class EmailResource {
 
  */
 
-    @PostMapping("customer/mail/sendMail/{firstName}/email/{email}")
-    public ResponseEntity<?> sendMail(@PathVariable("email") String email, @PathVariable("firstName") String firstName) throws IOException {
+    @PostMapping("customer/mail/sendMail/{first_name}/email/{email}")
+    public ResponseEntity<?> sendMail(@PathVariable("email") String email, @PathVariable("first_name") String firstName) throws IOException {
         welcomeMailDto = new WelcomeMailDto(email, "ss@ss", "hello " + firstName, "hello" );
-        emailService.sendWelcomeEmail(welcomeMailDto);
+        emailService.sendWelcomeEmail(welcomeMailDto, firstName);
         return ResponseEntity.ok().body("email sent");
     }
 
+    /*
     @PostMapping("/welcome")
     public ResponseEntity<?> sendWellcome(@RequestBody WelcomeMailDto mail) {
 
@@ -53,5 +54,5 @@ public class EmailResource {
         }
 
     }
-
+*/
 }

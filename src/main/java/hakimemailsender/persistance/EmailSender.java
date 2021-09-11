@@ -17,22 +17,28 @@ import java.io.IOException;
 public class EmailSender implements Emailer {
         private String apiKey;
         private String mailFrom;
+        private String templateId;
 
-    public EmailSender(String apiKey, String mailFrom) {
+    public EmailSender(String apiKey, String mailFrom, String templateId) {
         this.apiKey = apiKey;
         this.mailFrom = mailFrom;
+        this.templateId = templateId;
 
     }
 
     @Override
-    public String sendWelcomeMail(WelcomeMailDto welcomeMailDto) throws IOException {
+    public String sendWelcomeMail(WelcomeMailDto welcomeMailDto, String name) throws IOException {
         Email from = new Email(mailFrom);
         Email to = new Email(welcomeMailDto.getSendTo()); // hide
 
         String subject = welcomeMailDto.getSubject();
-        Content content = new Content("text/plain",welcomeMailDto.getContent());
+        Content content = new Content("text/html", " ");
 
         Mail mail = new Mail(from, subject, to, content);
+
+        mail.personalization.get(0).addDynamicTemplateData("first_name", name);
+        mail.setTemplateId(templateId);
+
 
         SendGrid sg = new SendGrid(apiKey);
         Request request = new Request();

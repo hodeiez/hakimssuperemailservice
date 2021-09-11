@@ -12,6 +12,6 @@ import java.io.IOException;
 
 public interface Emailer {
 
-   String sendWelcomeMail(WelcomeMailDto welcomeMailDto) throws IOException;
+   String sendWelcomeMail(WelcomeMailDto welcomeMailDto, String name) throws IOException;
 
 }

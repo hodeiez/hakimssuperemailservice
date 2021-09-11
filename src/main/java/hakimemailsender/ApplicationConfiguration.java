@@ -18,9 +18,12 @@ public class ApplicationConfiguration {
     private String apiKey;
     @Value("${twilio.email.from}")
     private String mailFrom;
+    @Value("${template.id}")
+    private String templateId;
+
     @Bean
     public EmailSender emailSender(){
-        return new EmailSender(apiKey,mailFrom);
+        return new EmailSender(apiKey,mailFrom, templateId );
     }
 
     @Bean
