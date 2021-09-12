@@ -15,6 +15,7 @@ import lombok.*;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WelcomeMailDto {
+    private String name;
     private String sendTo;
     private String mailfrom;
     private String content;
@@ -23,8 +24,9 @@ public class WelcomeMailDto {
     public WelcomeMailDto() {
     }
     @JsonCreator
-    public WelcomeMailDto(@JsonProperty("email") String sendTo, @JsonProperty("sender") String mailfrom,
+    public WelcomeMailDto(@JsonProperty("name")String name, @JsonProperty("email") String sendTo, @JsonProperty("sender") String mailfrom,
                           @JsonProperty("content") String content, @JsonProperty("subject") String subject) {
+        this.name = name;
         this.sendTo = sendTo;
         this.mailfrom = mailfrom;
         this.content = content;

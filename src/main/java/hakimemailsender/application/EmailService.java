@@ -20,7 +20,7 @@ public class EmailService {
 
     private final EmailSender emailSender;
 
-    public String sendWelcomeEmail (WelcomeMailDto welcomeMailDto, String name) throws IOException {
-        return emailSender.sendWelcomeMail(welcomeMailDto, name);
+    public String sendWelcomeEmail (WelcomeMailDto welcomeMailDto) throws IOException {
+        return emailSender.sendWelcomeMail(welcomeMailDto);
     }
 }

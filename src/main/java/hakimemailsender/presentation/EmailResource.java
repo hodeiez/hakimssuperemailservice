@@ -23,36 +23,25 @@ public class EmailResource {
 
     private WelcomeMailDto welcomeMailDto;
 
-/*
-    @GetMapping("/customer/add") We don't need this(?)
-    public ResponseEntity<?>  getRecipient(@RequestBody RecipientDto recipientDto) throws IOException {
-    return ResponseEntity.ok().body("mail" + recipientDto.getfirstName());
-
-    }
-
- */
-
+//We can remove this once HakimSuperServer adjusts Emailreq with name
     @PostMapping("customer/mail/sendMail/{first_name}/email/{email}")
-    public ResponseEntity<?> sendMail(@PathVariable("email") String email, @PathVariable("first_name") String firstName) throws IOException {
-        welcomeMailDto = new WelcomeMailDto(email, "ss@ss", "hello " + firstName, "hello" );
-        emailService.sendWelcomeEmail(welcomeMailDto, firstName);
+    public ResponseEntity<?> sendMail(@PathVariable("email") String email, @PathVariable("first_name") String name) throws IOException {
+        welcomeMailDto = new WelcomeMailDto(name, email, "ss@ss", "hello " + name, "hello" ); //this get overrided by the template
+        emailService.sendWelcomeEmail(welcomeMailDto);
         return ResponseEntity.ok().body("email sent");
     }
 
-    /*
-    @PostMapping("/welcome")
-    public ResponseEntity<?> sendWellcome(@RequestBody WelcomeMailDto mail) {
 
-        mail.setSubject("hakims livs");
-        System.out.println(mail.getContent());
+    @PostMapping("/welcome")
+    public ResponseEntity<?> sendWelcome(@RequestBody WelcomeMailDto mail) {
+
         try {
             emailService.sendWelcomeEmail(mail);
-            return ResponseEntity.ok().body(mail);
+            return ResponseEntity.ok().body("welcome email sent");
         }
         catch(IOException e){
             return ResponseEntity.badRequest().body(mail);
         }
-
     }
-*/
+
 }

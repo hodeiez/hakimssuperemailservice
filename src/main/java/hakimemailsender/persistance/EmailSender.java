@@ -27,16 +27,16 @@ public class EmailSender implements Emailer {
     }
 
     @Override
-    public String sendWelcomeMail(WelcomeMailDto welcomeMailDto, String name) throws IOException {
+    public String sendWelcomeMail(WelcomeMailDto welcomeMailDto) throws IOException {
         Email from = new Email(mailFrom);
-        Email to = new Email(welcomeMailDto.getSendTo()); // hide
+        Email to = new Email(welcomeMailDto.getSendTo());
 
         String subject = welcomeMailDto.getSubject();
         Content content = new Content("text/html", " ");
 
         Mail mail = new Mail(from, subject, to, content);
 
-        mail.personalization.get(0).addDynamicTemplateData("first_name", name);
+        mail.personalization.get(0).addDynamicTemplateData("first_name", welcomeMailDto.getName());
         mail.setTemplateId(templateId);
 
 
@@ -53,7 +53,7 @@ public class EmailSender implements Emailer {
         System.out.println(response.getHeaders());
         System.out.println(response.getBody());
         return response.getBody();
-    }
 
+    }
 
 }
