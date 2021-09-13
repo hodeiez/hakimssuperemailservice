@@ -3,6 +3,8 @@ package hakimemailsender;
 import hakimemailsender.persistance.EmailSender;
 import hakimemailsender.presentation.WelcomeMailDto;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +22,11 @@ public class ApplicationConfiguration {
     private String mailFrom;
     @Value("${template.id}")
     private String templateId;
+
+    @Bean
+    public ServletWebServerFactory servletWebServerFactory() {
+        return new TomcatServletWebServerFactory();
+    }
 
     @Bean
     public EmailSender emailSender(){
