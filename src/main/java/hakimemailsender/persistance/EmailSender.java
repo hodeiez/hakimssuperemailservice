@@ -5,8 +5,10 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.*;
 import hakimemailsender.domain.Emailer;
 import hakimemailsender.presentation.WelcomeMailDto;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Created by Jacaranda Perez
@@ -52,8 +54,7 @@ public class EmailSender implements Emailer {
         System.out.println(response.getStatusCode());
         System.out.println(response.getHeaders());
         System.out.println(response.getBody());
-        return response.getBody();
-
+        return Integer.toString(response.getStatusCode());
     }
 
 }

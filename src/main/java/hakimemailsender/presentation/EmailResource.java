@@ -36,8 +36,7 @@ public class EmailResource {
     public ResponseEntity<?> sendWelcome(@RequestBody WelcomeMailDto mail) {
 
         try {
-            emailService.sendWelcomeEmail(mail);
-            return ResponseEntity.ok().body("welcome email sent");
+            return ResponseEntity.ok().body(emailService.sendWelcomeEmail(mail));
         }
         catch(IOException e){
             return ResponseEntity.badRequest().body(mail);

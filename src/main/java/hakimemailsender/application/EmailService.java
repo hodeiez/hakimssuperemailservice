@@ -5,6 +5,7 @@ import hakimemailsender.persistance.EmailSender;
 import hakimemailsender.presentation.WelcomeMailDto;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,6 +22,12 @@ public class EmailService {
     private final EmailSender emailSender;
 
     public String sendWelcomeEmail (WelcomeMailDto welcomeMailDto) throws IOException {
-        return emailSender.sendWelcomeMail(welcomeMailDto);
+       String response= emailSender.sendWelcomeMail(welcomeMailDto);
+        if (response.equals("202")) {
+            return "email sent";
+        }
+        else{
+            return "could not send email";}
+
     }
 }
