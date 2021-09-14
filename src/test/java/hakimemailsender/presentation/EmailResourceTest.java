@@ -9,7 +9,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -19,10 +20,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -34,82 +33,67 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest()
 @AutoConfigureMockMvc
-@ContextConfiguration(classes = ApplicationConfiguration.class)
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("dev")
 class EmailResourceTest {
 
+    @Captor
+    private ArgumentCaptor<WelcomeMailDto> argumentCaptor;
 
     @Autowired
     private MockMvc mockMvc;
 
-    private final static WireMockServer wireMockServer = new WireMockServer(1234);
-
-    @BeforeEach
-    public void before() {
-        wireMockServer.start();
-    }
-
-
-    @AfterEach
-    public void after() {
-        wireMockServer.stop();
-    }
-
-//  new WelcomeMailDto("test","testingprogramingthings@gmail.com","testingprogramingthings@gmail.com", "nothing","nothing")
+    @MockBean
+    private EmailService mockEmailService;
 
     @Test
     void sendMailSuccess() throws Exception {
-    String test = "{\"name\":,\"test\",\"email\":\"testingprogramingthings@gmail.com\",\"sender\":" +
+        String test = "{\"name\":\"test\",\"email\":\"testingprogramingthings@gmail.com\",\"sender\":" +
                 "\"nothing\",\"content\":\"nothing\",\"subject\":\"nothing\"}";
-        System.out.println(wireMockServer.isRunning());
 
-    ResultActions resultActions = mockMvc.perform(post("/welcome")
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/welcome")
                 .content(test)
-                .contentType(MediaType.APPLICATION_JSON));
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
-        resultActions.andExpect(MockMvcResultMatchers.status().isAccepted());
+    verify(mockEmailService).sendWelcomeEmail(argumentCaptor.capture());
+    WelcomeMailDto welcomeMail = argumentCaptor.getValue();
+    assertEquals("test", welcomeMail.getName());
+    assertEquals("testingprogramingthings@gmail.com", welcomeMail.getSendTo());
     }
 
-
-
-/*
-    public static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-*/
-
-/*
     @Test
-    void sendMailSuccess(){
-        RestTemplate restTemplate = new RestTemplate();
+    void sendMailFailure() throws Exception {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(APPLICATION_JSON));
+        doThrow(new ResponseStatusException(HttpStatus.BAD_GATEWAY)).when(mockEmailService).sendWelcomeEmail(any());
 
-        HttpEntity<WelcomeMailDto> entity = new HttpEntity<>(new WelcomeMailDto("test","testingprogramingthings@gmail.com",
-                "testingprogramingthings@gmail.com", "nothing","nothing"), headers);
+        String test = "{\"name\":\"test\",\"email\":\"testingprogramingthings@gmail.com\",\"sender\":" +
+                "\"nothing\",\"content\":\"nothing\",\"subject\":\"nothing\"}";
 
-        final ResponseEntity<Void> response = restTemplate.postForEntity("http://localhost:8082/welcome", entity, Void.class);
-        System.out.println(response.getStatusCodeValue());
 
-    } */
+        mockMvc.perform(MockMvcRequestBuilders.post("/welcome")
+                        .content(test)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadGateway());
+
+    }
+
 }

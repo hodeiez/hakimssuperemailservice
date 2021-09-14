@@ -17,13 +17,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -47,15 +48,24 @@ public class EmailServiceTest {
     }
 
     @Test
-    void sendEmailTest() throws IOException {
+    void sendEmailTestSuccess() throws IOException {
 
     WelcomeMailDto mail = new WelcomeMailDto("test", "testingprogramingthings@gmail.com", "testingprograminthings@gmail.com",
             "empty", "empty");
-    when(emailSender.sendWelcomeMail(any(WelcomeMailDto.class))).thenReturn("202");
-    String status = emailService.sendWelcomeEmail(mail);
 
-    assertEquals("email sent", status);
+    emailService.sendWelcomeEmail(mail);
     verify(emailSender).sendWelcomeMail(any());
+
+    }
+
+    @Test
+    void sendEmailTestFailure() throws IOException {
+
+        WelcomeMailDto mail = new WelcomeMailDto("test", "testingprogramingthings@gmail.com", "testingprograminthings@gmail.com",
+                "empty", "empty");
+
+        doThrow(new IOException()).when(emailSender).sendWelcomeMail(any(WelcomeMailDto.class));
+        assertThrows(ResponseStatusException.class,()->emailService.sendWelcomeEmail(mail));
 
     }
 

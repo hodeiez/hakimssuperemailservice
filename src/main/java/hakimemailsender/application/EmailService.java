@@ -5,8 +5,10 @@ import hakimemailsender.persistance.EmailSender;
 import hakimemailsender.presentation.WelcomeMailDto;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
@@ -21,13 +23,11 @@ public class EmailService {
 
     private final EmailSender emailSender;
 
-    public String sendWelcomeEmail (WelcomeMailDto welcomeMailDto) throws IOException {
-       String response= emailSender.sendWelcomeMail(welcomeMailDto);
-        if (response.equals("202")) {
-            return "email sent";
-        }
-        else{
-            return "could not send email";}
-
+    public void sendWelcomeEmail (WelcomeMailDto welcomeMailDto) {
+       try {
+           emailSender.sendWelcomeMail(welcomeMailDto);
+       } catch (IOException exception){
+           throw new ResponseStatusException(HttpStatus.BAD_GATEWAY);
+       }
     }
 }

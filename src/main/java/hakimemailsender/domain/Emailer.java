@@ -14,6 +14,6 @@ import java.util.Optional;
 
 public interface Emailer {
 
-  String sendWelcomeMail(WelcomeMailDto welcomeMailDto) throws IOException;
+  void sendWelcomeMail(WelcomeMailDto welcomeMailDto) throws IOException;
 
 }

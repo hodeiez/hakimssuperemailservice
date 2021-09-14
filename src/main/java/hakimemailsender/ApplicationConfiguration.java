@@ -7,6 +7,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * Created by Jacaranda Perez
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * Project: HakimEmailSender
  */
 @Configuration
+@EnableWebMvc
 public class ApplicationConfiguration {
 
     @Value("${twilio.api.key}")

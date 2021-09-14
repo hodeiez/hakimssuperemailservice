@@ -21,30 +21,11 @@ public class EmailResource {
 
     private final EmailService emailService;
 
-    private WelcomeMailDto welcomeMailDto;
-
-//We can remove this once HakimSuperServer adjusts Emailreq with name
-    @PostMapping("customer/mail/sendMail/{first_name}/email/{email}")
-    public ResponseEntity<?> sendMail(@PathVariable("email") String email, @PathVariable("first_name") String name) throws IOException {
-        welcomeMailDto = new WelcomeMailDto(name, email, "ss@ss", "hello " + name, "hello" ); //this get overrided by the template
-        try {
-            return ResponseEntity.ok().body(emailService.sendWelcomeEmail(welcomeMailDto));
-        }
-        catch(IOException e){
-            return ResponseEntity.badRequest().body(welcomeMailDto);
-        }
-    }
-
 
     @PostMapping("/welcome")
     public ResponseEntity<?> sendWelcome(@RequestBody WelcomeMailDto mail) {
+        emailService.sendWelcomeEmail(mail);
+        return ResponseEntity.ok().build();
 
-        try {
-            return ResponseEntity.ok().body(emailService.sendWelcomeEmail(mail));
-        }
-        catch(IOException e){
-            return ResponseEntity.badRequest().body(mail);
-        }
     }
-
 }

@@ -29,7 +29,7 @@ public class EmailSender implements Emailer {
     }
 
     @Override
-    public String sendWelcomeMail(WelcomeMailDto welcomeMailDto) throws IOException {
+    public void sendWelcomeMail(WelcomeMailDto welcomeMailDto) throws IOException {
         Email from = new Email(mailFrom);
         Email to = new Email(welcomeMailDto.getSendTo());
 
@@ -54,7 +54,10 @@ public class EmailSender implements Emailer {
         System.out.println(response.getStatusCode());
         System.out.println(response.getHeaders());
         System.out.println(response.getBody());
-        return Integer.toString(response.getStatusCode());
+        if(response.getStatusCode() >= 300){
+        throw new IOException("sendgrid returned status code" + response.getStatusCode() +" "+ response.getBody());
+        }
+
     }
 
 }
