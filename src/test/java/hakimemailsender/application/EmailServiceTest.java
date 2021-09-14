@@ -2,7 +2,6 @@ package hakimemailsender.application;
 
 
 import hakimemailsender.ApplicationConfiguration;
-import hakimemailsender.application.EmailService;
 import hakimemailsender.persistance.EmailSender;
 import hakimemailsender.presentation.WelcomeMailDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,17 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
