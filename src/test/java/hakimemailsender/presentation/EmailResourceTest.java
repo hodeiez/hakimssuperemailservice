@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class EmailResourceTest {
 
     @Captor
-    private ArgumentCaptor<WelcomeMailDto> argumentCaptor;
+    private ArgumentCaptor<MailDto> argumentCaptor;
 
     @Autowired
     private MockMvc mockMvc;
@@ -47,8 +47,8 @@ class EmailResourceTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-    verify(mockEmailService).sendWelcomeEmail(argumentCaptor.capture());
-    WelcomeMailDto welcomeMail = argumentCaptor.getValue();
+    verify(mockEmailService).sendEmail(argumentCaptor.capture());
+    MailDto welcomeMail = argumentCaptor.getValue();
     assertEquals("test", welcomeMail.getName());
     assertEquals("testingprogramingthings@gmail.com", welcomeMail.getSendTo());
     }
@@ -56,7 +56,7 @@ class EmailResourceTest {
     @Test
     void sendMailFailure() throws Exception {
 
-        doThrow(new ResponseStatusException(HttpStatus.BAD_GATEWAY)).when(mockEmailService).sendWelcomeEmail(any());
+        doThrow(new ResponseStatusException(HttpStatus.BAD_GATEWAY)).when(mockEmailService).sendEmail(any());
 
         String test = "{\"name\":\"test\",\"email\":\"testingprogramingthings@gmail.com\",\"sender\":" +
                 "\"nothing\",\"content\":\"nothing\",\"subject\":\"nothing\"}";

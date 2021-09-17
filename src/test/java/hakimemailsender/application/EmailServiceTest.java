@@ -3,16 +3,13 @@ package hakimemailsender.application;
 
 import hakimemailsender.ApplicationConfiguration;
 import hakimemailsender.persistance.EmailSender;
-import hakimemailsender.presentation.WelcomeMailDto;
+import hakimemailsender.presentation.MailDto;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.server.ResponseStatusException;
@@ -44,22 +41,22 @@ public class EmailServiceTest {
     @Test
     void sendEmailTestSuccess() throws IOException {
 
-    WelcomeMailDto mail = new WelcomeMailDto("test", "testingprogramingthings@gmail.com", "testingprograminthings@gmail.com",
-            "empty", "empty");
+    MailDto mail = new MailDto("test", "testingprogramingthings@gmail.com", "testingprograminthings@gmail.com",
+            "empty", "empty", "type");
 
-    emailService.sendWelcomeEmail(mail);
-    verify(emailSender).sendWelcomeMail(any());
+    emailService.sendEmail(mail);
+    verify(emailSender).sendMail(any());
 
     }
 
     @Test
     void sendEmailTestFailure() throws IOException {
 
-        WelcomeMailDto mail = new WelcomeMailDto("test", "testingprogramingthings@gmail.com", "testingprograminthings@gmail.com",
-                "empty", "empty");
+        MailDto mail = new MailDto("test", "testingprogramingthings@gmail.com", "testingprograminthings@gmail.com",
+                "empty", "empty", "type");
 
-        doThrow(new IOException()).when(emailSender).sendWelcomeMail(any(WelcomeMailDto.class));
-        assertThrows(ResponseStatusException.class,()->emailService.sendWelcomeEmail(mail));
+        doThrow(new IOException()).when(emailSender).sendMail(any(MailDto.class));
+        assertThrows(ResponseStatusException.class,()->emailService.sendEmail(mail));
 
     }
 

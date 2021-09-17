@@ -1,7 +1,8 @@
 package hakimemailsender;
 
 import hakimemailsender.persistance.EmailSender;
-import hakimemailsender.presentation.WelcomeMailDto;
+import hakimemailsender.persistance.Type;
+import hakimemailsender.presentation.MailDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
@@ -22,8 +23,11 @@ public class ApplicationConfiguration {
     private String apiKey;
     @Value("${twilio.email.from}")
     private String mailFrom;
-    @Value("${template.id}")
-    private String templateId;
+    @Value("${template.welcome.id}")
+    private String templateIdWelcome;
+    @Value("${template.confirmation.id}")
+    private String templateIdConfirmation;
+    private Type type;
 
     @Bean
     public ServletWebServerFactory servletWebServerFactory() {
@@ -32,11 +36,11 @@ public class ApplicationConfiguration {
 
     @Bean
     public EmailSender emailSender(){
-        return new EmailSender(apiKey,mailFrom, templateId );
+        return new EmailSender(apiKey,mailFrom, templateIdWelcome, templateIdConfirmation, type);
     }
 
     @Bean
-    public WelcomeMailDto welcomeMailDto(){
-        return new WelcomeMailDto();
+    public MailDto welcomeMailDto(){
+        return new MailDto();
     }
 }

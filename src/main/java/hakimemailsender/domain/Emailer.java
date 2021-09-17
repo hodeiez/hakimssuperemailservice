@@ -1,10 +1,8 @@
 package hakimemailsender.domain;
 
-import hakimemailsender.presentation.WelcomeMailDto;
-import org.springframework.http.ResponseEntity;
+import hakimemailsender.presentation.MailDto;
 
 import java.io.IOException;
-import java.util.Optional;
 
 /**
  * Created by Jacaranda Perez
@@ -14,6 +12,6 @@ import java.util.Optional;
 
 public interface Emailer {
 
-  void sendWelcomeMail(WelcomeMailDto welcomeMailDto) throws IOException;
+  void sendMail(MailDto mailDto) throws IOException;
 
 }

@@ -1,12 +1,9 @@
 package hakimemailsender.application;
 
-import hakimemailsender.domain.Emailer;
 import hakimemailsender.persistance.EmailSender;
-import hakimemailsender.presentation.WelcomeMailDto;
+import hakimemailsender.presentation.MailDto;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,9 +20,9 @@ public class EmailService {
 
     private final EmailSender emailSender;
 
-    public void sendWelcomeEmail (WelcomeMailDto welcomeMailDto) {
+    public void sendEmail(MailDto mailDto) {
        try {
-           emailSender.sendWelcomeMail(welcomeMailDto);
+           emailSender.sendMail(mailDto);
        } catch (IOException exception){
            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY);
        }

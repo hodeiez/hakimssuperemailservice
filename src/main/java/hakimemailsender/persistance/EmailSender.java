@@ -4,11 +4,9 @@ import com.sendgrid.*;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.*;
 import hakimemailsender.domain.Emailer;
-import hakimemailsender.presentation.WelcomeMailDto;
-import org.springframework.http.ResponseEntity;
+import hakimemailsender.presentation.MailDto;
 
 import java.io.IOException;
-import java.util.Optional;
 
 /**
  * Created by Jacaranda Perez
@@ -17,30 +15,38 @@ import java.util.Optional;
  */
 
 public class EmailSender implements Emailer {
-        private String apiKey;
-        private String mailFrom;
-        private String templateId;
+        private final String apiKey;
+        private final String mailFrom;
+        private final String templateIdWelcome;
+        private final String templateIdConfirmation;
+        private Type type;
 
-    public EmailSender(String apiKey, String mailFrom, String templateId) {
+    public EmailSender(String apiKey, String mailFrom, String templateIdWelcome, String templateIdConfirmation, Type type) {
         this.apiKey = apiKey;
         this.mailFrom = mailFrom;
-        this.templateId = templateId;
+        this.templateIdWelcome = templateIdWelcome;
+        this.templateIdConfirmation = templateIdConfirmation;
+        this.type = type;
 
     }
 
     @Override
-    public void sendWelcomeMail(WelcomeMailDto welcomeMailDto) throws IOException {
+    public void sendMail(MailDto mailDto) throws IOException {
         Email from = new Email(mailFrom);
-        Email to = new Email(welcomeMailDto.getSendTo());
+        Email to = new Email(mailDto.getSendTo());
 
-        String subject = welcomeMailDto.getSubject();
+        String subject = mailDto.getSubject();
         Content content = new Content("text/html", " ");
 
         Mail mail = new Mail(from, subject, to, content);
 
-        mail.personalization.get(0).addDynamicTemplateData("first_name", welcomeMailDto.getName());
-        mail.setTemplateId(templateId);
-
+        mail.personalization.get(0).addDynamicTemplateData("first_name", mailDto.getName());
+        String type = mailDto.getType();
+        if(type.equals("CONFIRMATION")) {
+            mail.setTemplateId(templateIdConfirmation);
+        } else {
+            mail.setTemplateId(templateIdWelcome);
+        }
 
         SendGrid sg = new SendGrid(apiKey);
         Request request = new Request();
