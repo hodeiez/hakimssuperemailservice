@@ -24,7 +24,7 @@ public class EmailResource {
 
     }
 
-    @PostMapping("/confirmation")
+    @PostMapping("/confirm")
     public ResponseEntity<?> sendConfirmationMail(@RequestBody MailDto mail) {
         emailService.sendEmail(mail);
         return ResponseEntity.ok().build();
