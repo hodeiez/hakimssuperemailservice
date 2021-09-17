@@ -42,7 +42,7 @@ public class EmailSender implements Emailer {
 
         mail.personalization.get(0).addDynamicTemplateData("first_name", mailDto.getName());
         String type = mailDto.getType();
-        if(type.equals(Type.CONFIRM)) {
+        if(type.equals(Type.CONFIRM.toString())) {
             mail.setTemplateId(templateIdConfirmation);
         } else {
             mail.setTemplateId(templateIdWelcome);

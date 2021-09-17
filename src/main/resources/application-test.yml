@@ -1,4 +1,4 @@
 twilio.api.key=test
 twilio.email.from=test
-template.confirmation.id=test
+template.welcome.id=test
 template.confirmation.id=test
