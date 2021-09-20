@@ -1,3 +1,4 @@
-template.id: ${TEMPLATE_ID}
+template.welcome.id: ${TEMPLATE_WELCOME_ID}
+template.confirmation.id: ${TEMPLATE_CONFIRMATION_ID}
 twilio.api.key: ${TWILIO_API_KEY}
 twilio.email.from: ${TWILIO_EMAIL_FROM}

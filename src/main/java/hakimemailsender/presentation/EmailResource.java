@@ -1,14 +1,9 @@
 package hakimemailsender.presentation;
 
 import hakimemailsender.application.EmailService;
-import hakimemailsender.domain.Emailer;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
-import java.io.IOException;
 
 /**
  * Created by Jacaranda Perez
@@ -23,8 +18,15 @@ public class EmailResource {
 
 
     @PostMapping("/welcome")
-    public ResponseEntity<?> sendWelcome(@RequestBody WelcomeMailDto mail) {
-        emailService.sendWelcomeEmail(mail);
+    public ResponseEntity<?> sendWelcomeMail(@RequestBody MailDto mail) {
+        emailService.sendEmail(mail);
+        return ResponseEntity.ok().build();
+
+    }
+
+    @PostMapping("/confirm")
+    public ResponseEntity<?> sendConfirmationMail(@RequestBody MailDto mail) {
+        emailService.sendEmail(mail);
         return ResponseEntity.ok().build();
 
     }

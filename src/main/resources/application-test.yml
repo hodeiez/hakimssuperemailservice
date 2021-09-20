@@ -1,3 +1,4 @@
-twilio.api.key=test
-twilio.email.from=test
-template.id=test
+twilio.api.key: test
+twilio.email.from: test
+template.welcome.id: test
+template.confirmation.id: test

@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class EmailResourceTest {
 
     @Captor
-    private ArgumentCaptor<WelcomeMailDto> argumentCaptor;
+    private ArgumentCaptor<MailDto> argumentCaptor;
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,9 +36,9 @@ class EmailResourceTest {
     private EmailService mockEmailService;
 
     @Test
-    void sendMailSuccess() throws Exception {
+    void sendWelcomMailSuccess() throws Exception {
         String test = "{\"name\":\"test\",\"email\":\"testingprogramingthings@gmail.com\",\"sender\":" +
-                "\"nothing\",\"content\":\"nothing\",\"subject\":\"nothing\"}";
+                "\"nothing\",\"content\":\"nothing\",\"subject\":\"nothing\",\"type\":\"welcome\"}";
 
 
     mockMvc.perform(MockMvcRequestBuilders.post("/welcome")
@@ -47,19 +47,19 @@ class EmailResourceTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-    verify(mockEmailService).sendWelcomeEmail(argumentCaptor.capture());
-    WelcomeMailDto welcomeMail = argumentCaptor.getValue();
+    verify(mockEmailService).sendEmail(argumentCaptor.capture());
+    MailDto welcomeMail = argumentCaptor.getValue();
     assertEquals("test", welcomeMail.getName());
     assertEquals("testingprogramingthings@gmail.com", welcomeMail.getSendTo());
     }
 
     @Test
-    void sendMailFailure() throws Exception {
+    void sendWelcomeMailFailure() throws Exception {
 
-        doThrow(new ResponseStatusException(HttpStatus.BAD_GATEWAY)).when(mockEmailService).sendWelcomeEmail(any());
+        doThrow(new ResponseStatusException(HttpStatus.BAD_GATEWAY)).when(mockEmailService).sendEmail(any());
 
         String test = "{\"name\":\"test\",\"email\":\"testingprogramingthings@gmail.com\",\"sender\":" +
-                "\"nothing\",\"content\":\"nothing\",\"subject\":\"nothing\"}";
+                "\"nothing\",\"content\":\"nothing\",\"subject\":\"nothing\",\"type\":\"welcome\"}";
 
 
         mockMvc.perform(MockMvcRequestBuilders.post("/welcome")
@@ -69,5 +69,42 @@ class EmailResourceTest {
                 .andExpect(status().isBadGateway());
 
     }
+
+    @Test
+    void sendConfirmMailSuccess() throws Exception {
+        String test = "{\"name\":\"test\",\"email\":\"testingprogramingthings@gmail.com\",\"sender\":" +
+                "\"nothing\",\"content\":\"nothing\",\"subject\":\"nothing\",\"type\":\"confirm\"}";
+
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/welcome")
+                        .content(test)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(mockEmailService).sendEmail(argumentCaptor.capture());
+        MailDto welcomeMail = argumentCaptor.getValue();
+        assertEquals("test", welcomeMail.getName());
+        assertEquals("testingprogramingthings@gmail.com", welcomeMail.getSendTo());
+        assertEquals("confirm", welcomeMail.getType());
+    }
+
+    @Test
+    void sendConfirmMailFailure() throws Exception {
+
+        doThrow(new ResponseStatusException(HttpStatus.BAD_GATEWAY)).when(mockEmailService).sendEmail(any());
+
+        String test = "{\"name\":\"test\",\"email\":\"testingprogramingthings@gmail.com\",\"sender\":" +
+                "\"nothing\",\"content\":\"nothing\",\"subject\":\"nothing\",\"type\":\"confirm\"}";
+
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/welcome")
+                        .content(test)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadGateway());
+
+    }
+
 
 }
