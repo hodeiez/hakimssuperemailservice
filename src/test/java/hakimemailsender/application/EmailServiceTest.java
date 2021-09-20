@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ContextConfiguration(classes = ApplicationConfiguration.class)
+//@ContextConfiguration(classes = ApplicationConfiguration.class)
 @ActiveProfiles("test")
 public class EmailServiceTest {
 
