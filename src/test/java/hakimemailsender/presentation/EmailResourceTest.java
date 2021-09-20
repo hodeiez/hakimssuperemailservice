@@ -76,7 +76,7 @@ class EmailResourceTest {
                 "\"nothing\",\"content\":\"nothing\",\"subject\":\"nothing\",\"type\":\"confirm\"}";
 
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/welcome")
+        mockMvc.perform(MockMvcRequestBuilders.post("/confirm")
                         .content(test)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -98,7 +98,7 @@ class EmailResourceTest {
                 "\"nothing\",\"content\":\"nothing\",\"subject\":\"nothing\",\"type\":\"confirm\"}";
 
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/welcome")
+        mockMvc.perform(MockMvcRequestBuilders.post("/confirm")
                         .content(test)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
